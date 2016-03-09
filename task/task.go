@@ -11,6 +11,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// The package provides a TaskManager implemented using TDD techniques.
+// Package task provides a Task and TaskManager implemented using TDD techniques.
 // The tests were developed before the code was written.
 package task
+
+// Task has a title
+type Task struct {
+	title string
+}
+
+// NewTask creates Tasks given a title
+func NewTask(title string) (*Task, error) {
+	return &Task{title}, nil
+}
