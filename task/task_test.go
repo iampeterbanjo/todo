@@ -13,7 +13,35 @@
 
 package task
 
-import "testing"
+import (
+	"testing"
+
+	. "github.com/smartystreets/goconvey/convey"
+)
+
+func TestTask(t *testing.T) {
+
+	Convey("Given a title", t, func() {
+		title := "learn Go"
+		task := newTaskOrFatal(t, title)
+
+		Convey("It should have that title", func() {
+			So(task.Title, ShouldEqual, title)
+		})
+
+		Convey("It should not be done", func() {
+			So(task.Done, ShouldBeFalse)
+		})
+	})
+
+	Convey("For empty titles", t, func() {
+		_, err := NewTask("")
+
+		Convey("It should error", func() {
+			So(err, ShouldEqual, "missing title")
+		})
+	})
+}
 
 func newTaskOrFatal(t *testing.T, title string) *Task {
 	task, err := NewTask(title)
@@ -21,24 +49,6 @@ func newTaskOrFatal(t *testing.T, title string) *Task {
 		t.Fatalf("new task: %v", err)
 	}
 	return task
-}
-
-func TestNewTask(t *testing.T) {
-	title := "learn Go"
-	task := newTaskOrFatal(t, title)
-	if task.Title != title {
-		t.Errorf("expected title %q, got %q", title, task.Title)
-	}
-	if task.Done {
-		t.Errorf("new task is done")
-	}
-}
-
-func TestNewTaskEmptyTitle(t *testing.T) {
-	_, err := NewTask("")
-	if err == nil {
-		t.Errorf("expected 'empty title' error, got nil")
-	}
 }
 
 func TestSaveTaskAndRetrieve(t *testing.T) {

@@ -17,10 +17,11 @@ package task
 
 // Task has a title
 type Task struct {
-	title string
+	Title string
+	Done  bool
 }
 
 // NewTask creates Tasks given a title
 func NewTask(title string) (*Task, error) {
-	return &Task{title}, nil
+	return &Task{title, false}, nil
 }
