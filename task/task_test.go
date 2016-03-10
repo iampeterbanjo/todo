@@ -20,6 +20,14 @@ import (
 )
 
 func TestTask(t *testing.T) {
+	Convey("Creating a new task", func() {
+		task, err := NewTask("Write tests")
+
+		Convey("Should return a task", func() {
+			So(err, ShouldBeNil)
+			So(*task, ShouldHaveSameTypeAs, &Task{})
+		})
+	})
 
 	Convey("Given a title", t, func() {
 		title := "learn Go"
@@ -43,85 +51,98 @@ func TestTask(t *testing.T) {
 	})
 }
 
+func TestTaskManager(t *testing.T) {
+	Convey("Given a new task", func() {
+		task := newTaskOrFatal(t, "learn Go")
+
+		m := NewTaskManager()
+
+		Convey("A saved task", func() {
+			m.Save(task)
+
+			Convey("Should match created task", func() {
+				all := m.All()
+				So(len(all), ShouldEqual, 1)
+				So(*all[0], ShouldEqual, *task)
+			})
+		})
+	})
+
+	Convey("Given two new tasks", func() {
+		learnGo := newTaskOrFatal(t, "learn Go")
+		learnTDD := newTaskOrFatal(t, "learn TDD")
+
+		m := NewTaskManager()
+
+		Convey("Saving both of them", func() {
+			m.Save(learnGo)
+			m.Save(learnTDD)
+			all := m.All()
+
+			Convey("They both should be saved", func() {
+				So(len(all), ShouldEqual, 2)
+			})
+
+			Convey("Saved tasks should match created tasks", func() {
+				So(*all[0], ShouldEqual, *learnGo)
+				So(*all[1], ShouldEqual, *learnTDD)
+			})
+		})
+	})
+
+	Convey("Given a saved task", func() {
+		task := newTaskOrFatal(t, "learn Go")
+
+		m := NewTaskManager()
+		m.Save(task)
+
+		Convey("Completing the task", func() {
+			task.Done = true
+
+			Convey("Should mark the saved task as complete", func() {
+				So(m.All()[0].Done, ShouldBeTrue)
+			})
+		})
+	})
+
+	Convey("Given a new task", func() {
+		task := newTaskOrFatal(t, "learn Go")
+
+		m := NewTaskManager()
+
+		Convey("Multiple saves of the task", func() {
+			m.Save(task)
+			m.Save(task)
+
+			Convey("Should be ok", func() {
+				all := m.All()
+				So(len(all), ShouldEqual, 1)
+				So(*all[0], ShouldEqual, *task)
+			})
+		})
+	})
+
+	Convey("Given a new task", func() {
+		Convey("Modifying a task", nil)
+	})
+
+	Convey("Given a saved task", func() {
+		task := newTaskOrFatal(t, "learn Go")
+		m := NewTaskManager()
+		m.Save(task)
+
+		Convey("Finding a task", func() {
+			ft, ok := m.Find(task.ID)
+
+			Convey("Should return the task", func() {
+				So(ok, ShouldBeNil)
+				So(*ft, ShouldEqual, *task)
+			})
+		})
+	})
+}
+
 func newTaskOrFatal(t *testing.T, title string) *Task {
 	task, err := NewTask(title)
-	if err != nil {
-		t.Fatalf("new task: %v", err)
-	}
 	return task
-}
-
-func TestSaveTaskAndRetrieve(t *testing.T) {
-	task := newTaskOrFatal(t, "learn Go")
-
-	m := NewTaskManager()
-	m.Save(task)
-
-	all := m.All()
-	if len(all) != 1 {
-		t.Errorf("expected 1 task, got %v", len(all))
-	}
-	if *all[0] != *task {
-		t.Errorf("expected %v, got %v", task, all[0])
-	}
-}
-
-func TestSaveAndRetrieveTwoTasks(t *testing.T) {
-	learnGo := newTaskOrFatal(t, "learn Go")
-	learnTDD := newTaskOrFatal(t, "learn TDD")
-
-	m := NewTaskManager()
-	m.Save(learnGo)
-	m.Save(learnTDD)
-
-	all := m.All()
-	if len(all) != 2 {
-		t.Errorf("expected 2 tasks, got %v", len(all))
-	}
-	if *all[0] != *learnGo && *all[1] != *learnGo {
-		t.Errorf("missing task: %v", learnGo)
-	}
-	if *all[0] != *learnTDD && *all[1] != *learnTDD {
-		t.Errorf("missing task: %v", learnTDD)
-	}
-}
-
-func TestSaveModifyAndRetrieve(t *testing.T) {
-	task := newTaskOrFatal(t, "learn Go")
-	m := NewTaskManager()
-	m.Save(task)
-
-	task.Done = true
-	if m.All()[0].Done {
-		t.Errorf("saved task wasn't done")
-	}
-}
-
-func TestSaveTwiceAndRetrieve(t *testing.T) {
-	task := newTaskOrFatal(t, "learn Go")
-	m := NewTaskManager()
-	m.Save(task)
-	m.Save(task)
-
-	all := m.All()
-	if len(all) != 1 {
-		t.Errorf("expected 1 task, got %v", len(all))
-	}
-	if *all[0] != *task {
-		t.Errorf("expected task %v, got %v", task, all[0])
-	}
-}
-
-func TestSaveAndFind(t *testing.T) {
-	task := newTaskOrFatal(t, "learn Go")
-	m := NewTaskManager()
-	m.Save(task)
-
-	nt, ok := m.Find(task.ID)
-	if !ok {
-		t.Errorf("didn't find task")
-	}
-	if *task != *nt {
-		t.Errorf("expected %v, got %v", task, nt)
-	}
 }
