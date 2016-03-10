@@ -21,7 +21,22 @@ type Task struct {
 	Done  bool
 }
 
+// TaskManager has methods to work with tasks
+type TaskManager struct {
+	Tasks []*Task
+}
+
 // NewTask creates Tasks given a title
 func NewTask(title string) (*Task, error) {
 	return &Task{title, false}, nil
+}
+
+// NewTaskManager creates a TaskManager
+func NewTaskManager() *TaskManager {
+	return &TaskManager{}
+}
+
+// Save task to TaskManager.Tasks
+func (t TaskManager) Save(task *Task) {
+	t.Tasks = append(t.Tasks, task)
 }
