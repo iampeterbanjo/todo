@@ -11,7 +11,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// Package task provides a Task and TaskManager implemented using TDD techniques.
+// Package task provides a Task and Manager implemented using TDD techniques.
 // The tests were developed before the code was written.
 package task
 
@@ -21,8 +21,8 @@ type Task struct {
 	Done  bool
 }
 
-// TaskManager has methods to work with tasks
-type TaskManager struct {
+// Manager has methods to work with tasks
+type Manager struct {
 	Tasks []*Task
 }
 
@@ -31,12 +31,12 @@ func NewTask(title string) (*Task, error) {
 	return &Task{title, false}, nil
 }
 
-// NewTaskManager creates a TaskManager
-func NewTaskManager() *TaskManager {
-	return &TaskManager{}
+// NewManager creates a Manager
+func NewManager() *Manager {
+	return &Manager{}
 }
 
-// Save task to TaskManager.Tasks
-func (t TaskManager) Save(task *Task) {
+// Save task to Manager.Tasks
+func (t Manager) Save(task *Task) {
 	t.Tasks = append(t.Tasks, task)
 }

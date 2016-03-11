@@ -51,11 +51,11 @@ func TestTask(t *testing.T) {
 	})
 }
 
-func TestTaskManager(t *testing.T) {
+func TestManager(t *testing.T) {
 	Convey("Given a new task", func() {
 		task := newTaskOrFatal(t, "learn Go")
 
-		m := NewTaskManager()
+		m := NewManager()
 
 		Convey("A saved task", func() {
 			m.Save(task)
@@ -72,7 +72,7 @@ func TestTaskManager(t *testing.T) {
 		learnGo := newTaskOrFatal(t, "learn Go")
 		learnTDD := newTaskOrFatal(t, "learn TDD")
 
-		m := NewTaskManager()
+		m := NewManager()
 
 		Convey("Saving both of them", func() {
 			m.Save(learnGo)
@@ -93,7 +93,7 @@ func TestTaskManager(t *testing.T) {
 	Convey("Given a saved task", func() {
 		task := newTaskOrFatal(t, "learn Go")
 
-		m := NewTaskManager()
+		m := NewManager()
 		m.Save(task)
 
 		Convey("Completing the task", func() {
@@ -108,7 +108,7 @@ func TestTaskManager(t *testing.T) {
 	Convey("Given a new task", func() {
 		task := newTaskOrFatal(t, "learn Go")
 
-		m := NewTaskManager()
+		m := NewManager()
 
 		Convey("Multiple saves of the task", func() {
 			m.Save(task)
@@ -128,7 +128,7 @@ func TestTaskManager(t *testing.T) {
 
 	Convey("Given a saved task", func() {
 		task := newTaskOrFatal(t, "learn Go")
-		m := NewTaskManager()
+		m := NewManager()
 		m.Save(task)
 
 		Convey("Finding a task", func() {
