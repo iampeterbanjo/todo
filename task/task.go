@@ -40,3 +40,8 @@ func NewManager() *Manager {
 func (t Manager) Save(task *Task) {
 	t.Tasks = append(t.Tasks, task)
 }
+
+// All tasks
+func (t Manager) All() []*Task {
+	return t.Tasks
+}
