@@ -80,14 +80,14 @@ func TestManager(t *testing.T) {
 			})
 		})
 
-		SkipConvey("Multiple saves of the task", func() {
+		Convey("Multiple saves of the task", func() {
 			m.Save(task)
 			m.Save(task)
 
-			SkipConvey("Should be ok", func() {
+			Convey("Should be ok", func() {
 				all := m.All()
 				So(len(all), ShouldEqual, 1)
-				So(*all[0], ShouldEqual, *task)
+				So(all[0], ShouldResemble, task)
 			})
 		})
 
