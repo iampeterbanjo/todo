@@ -41,7 +41,27 @@ func NewManager() *Manager {
 
 // Save task to Manager.Tasks
 func (m Manager) Save(task *Task) {
-	m.Tasks = append(m.Tasks, task)
+	all := m.All()
+	found := false
+
+	for i, f := range all {
+		if f.ID == task.ID {
+			m.Tasks[i] = CloneTask(task)
+			found = true
+			return
+		}
+	}
+
+	if !found {
+		m.Tasks = append(m.Tasks, CloneTask(task))
+		return
+	}
+}
+
+// CloneTask to create a copy
+func CloneTask(t *Task) *Task {
+	c := *t
+	return &c
 }
 
 // All tasks

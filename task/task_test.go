@@ -26,7 +26,7 @@ func TestTask(t *testing.T) {
 
 		Convey("It should return a task", func() {
 			So(err, ShouldBeNil)
-			So(*task, ShouldHaveSameTypeAs, &Task{})
+			So(task, ShouldHaveSameTypeAs, &Task{})
 		})
 
 		Convey("It should have that title", func() {
@@ -35,6 +35,14 @@ func TestTask(t *testing.T) {
 
 		Convey("It should not be done", func() {
 			So(task.Done, ShouldBeFalse)
+		})
+
+		Convey("Cloning a task", func() {
+			c := CloneTask(task)
+
+			Convey("Should copy the same task", func() {
+				So(c, ShouldEqual, task)
+			})
 		})
 	})
 
@@ -55,15 +63,16 @@ func TestManager(t *testing.T) {
 
 		Convey("A saved task", func() {
 			m.Save(task)
+			all := m.All()
 
 			Convey("Should match created task", func() {
-				all := m.All()
 				So(len(all), ShouldEqual, 1)
-				So(*all[0], ShouldEqual, *task)
+				So(all[0], ShouldEqual, *task)
 			})
 
 			Convey("Completing the task", func() {
 				task.Done = true
+				m.Save(task)
 
 				Convey("Should mark the saved task as complete", func() {
 					So(m.All()[0].Done, ShouldBeTrue)
