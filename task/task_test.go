@@ -65,6 +65,33 @@ func TestManager(t *testing.T) {
 				So(len(all), ShouldEqual, 1)
 				So(*all[0], ShouldEqual, *task)
 			})
+
+			Convey("Completing the task", func() {
+				task.Done = true
+
+				Convey("Should mark the saved task as complete", func() {
+					So(m.All()[0].Done, ShouldBeTrue)
+				})
+			})
+		})
+
+		Convey("Multiple saves of the task", func() {
+			m.Save(task)
+			m.Save(task)
+
+			Convey("Should be ok", func() {
+				all := m.All()
+				So(len(all), ShouldEqual, 1)
+				So(*all[0], ShouldEqual, *task)
+			})
+		})
+
+		Convey("Finding a task", func() {
+			f := m.Find(task.ID)
+
+			Convey("Should return the task", func() {
+				So(f, ShouldEqual, *task)
+			})
 		})
 	})
 
@@ -86,52 +113,6 @@ func TestManager(t *testing.T) {
 			Convey("Saved tasks should match created tasks", func() {
 				So(*all[0], ShouldEqual, *learnGo)
 				So(*all[1], ShouldEqual, *learnTDD)
-			})
-		})
-	})
-
-	Convey("Given a saved task", t, func() {
-		task, _ := newTaskOrFatal("learn Go")
-
-		m := NewManager()
-		m.Save(task)
-
-		Convey("Completing the task", func() {
-			task.Done = true
-
-			Convey("Should mark the saved task as complete", func() {
-				So(m.All()[0].Done, ShouldBeTrue)
-			})
-		})
-	})
-
-	Convey("Given a new task", t, func() {
-		task, _ := newTaskOrFatal("learn Go")
-
-		m := NewManager()
-
-		Convey("Multiple saves of the task", func() {
-			m.Save(task)
-			m.Save(task)
-
-			Convey("Should be ok", func() {
-				all := m.All()
-				So(len(all), ShouldEqual, 1)
-				So(*all[0], ShouldEqual, *task)
-			})
-		})
-	})
-
-	Convey("Given a saved task", t, func() {
-		task, _ := newTaskOrFatal("learn Go")
-		m := NewManager()
-		m.Save(task)
-
-		Convey("Finding a task", func() {
-			f := m.Find(task.ID)
-
-			Convey("Should return the task", func() {
-				So(f, ShouldEqual, *task)
 			})
 		})
 	})
