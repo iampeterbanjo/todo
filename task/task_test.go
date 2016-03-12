@@ -46,11 +46,11 @@ func TestTask(t *testing.T) {
 		})
 	})
 
-	SkipConvey("Given a task with an empty title", t, func() {
+	Convey("Given a task with an empty title", t, func() {
 		_, err := NewTask("")
 
-		SkipConvey("It should error", func() {
-			So(err, ShouldEqual, "missing title")
+		Convey("It should error", func() {
+			So(err.Error(), ShouldEqual, "missing title")
 		})
 	})
 }

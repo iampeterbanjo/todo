@@ -15,7 +15,10 @@
 // The tests were developed before the code was written.
 package task
 
-import "math/rand"
+import (
+	"errors"
+	"math/rand"
+)
 
 // Task has a title
 type Task struct {
@@ -31,6 +34,10 @@ type Manager struct {
 
 // NewTask creates Tasks given a title
 func NewTask(title string) (*Task, error) {
+	if title == "" {
+		return nil, errors.New("missing title")
+	}
+
 	return &Task{title, false, rand.Float64()}, nil
 }
 
