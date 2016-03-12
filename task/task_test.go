@@ -20,7 +20,7 @@ import (
 )
 
 func TestTask(t *testing.T) {
-	Convey("Creating a new task", func() {
+	Convey("Creating a new task", t, func() {
 		task, err := NewTask("Write tests")
 
 		Convey("Should return a task", func() {
@@ -31,7 +31,7 @@ func TestTask(t *testing.T) {
 
 	Convey("Given a title", t, func() {
 		title := "learn Go"
-		task := newTaskOrFatal(t, title)
+		task, _ := newTaskOrFatal(title)
 
 		Convey("It should have that title", func() {
 			So(task.Title, ShouldEqual, title)
@@ -52,8 +52,8 @@ func TestTask(t *testing.T) {
 }
 
 func TestManager(t *testing.T) {
-	Convey("Given a new task", func() {
-		task := newTaskOrFatal(t, "learn Go")
+	Convey("Given a new task", t, func() {
+		task, _ := newTaskOrFatal("learn Go")
 
 		m := NewManager()
 
@@ -68,9 +68,9 @@ func TestManager(t *testing.T) {
 		})
 	})
 
-	Convey("Given two new tasks", func() {
-		learnGo := newTaskOrFatal(t, "learn Go")
-		learnTDD := newTaskOrFatal(t, "learn TDD")
+	Convey("Given two new tasks", t, func() {
+		learnGo, _ := newTaskOrFatal("learn Go")
+		learnTDD, _ := newTaskOrFatal("learn TDD")
 
 		m := NewManager()
 
@@ -90,8 +90,8 @@ func TestManager(t *testing.T) {
 		})
 	})
 
-	Convey("Given a saved task", func() {
-		task := newTaskOrFatal(t, "learn Go")
+	Convey("Given a saved task", t, func() {
+		task, _ := newTaskOrFatal("learn Go")
 
 		m := NewManager()
 		m.Save(task)
@@ -105,8 +105,8 @@ func TestManager(t *testing.T) {
 		})
 	})
 
-	Convey("Given a new task", func() {
-		task := newTaskOrFatal(t, "learn Go")
+	Convey("Given a new task", t, func() {
+		task, _ := newTaskOrFatal("learn Go")
 
 		m := NewManager()
 
@@ -122,27 +122,22 @@ func TestManager(t *testing.T) {
 		})
 	})
 
-	Convey("Given a new task", func() {
-		Convey("Modifying a task", nil)
-	})
-
-	Convey("Given a saved task", func() {
-		task := newTaskOrFatal(t, "learn Go")
+	Convey("Given a saved task", t, func() {
+		task, _ := newTaskOrFatal("learn Go")
 		m := NewManager()
 		m.Save(task)
 
 		Convey("Finding a task", func() {
-			ft, ok := m.Find(task.ID)
+			f := m.Find(task.ID)
 
 			Convey("Should return the task", func() {
-				So(ok, ShouldBeNil)
-				So(*ft, ShouldEqual, *task)
+				So(f, ShouldEqual, *task)
 			})
 		})
 	})
 }
 
-func newTaskOrFatal(t *testing.T, title string) *Task {
+func newTaskOrFatal(title string) (*Task, error) {
 	task, err := NewTask(title)
-	return task
+	return task, err
 }

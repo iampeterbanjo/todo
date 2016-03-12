@@ -52,10 +52,12 @@ func (m Manager) All() []*Task {
 // Find a Task in Tasks
 func (m Manager) Find(id float64) *Task {
 	f := new(Task)
+
 	for _, t := range m.All() {
 		if t.ID == id {
 			f = t
 		}
 	}
+
 	return f
 }
