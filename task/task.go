@@ -77,14 +77,12 @@ func (m *Manager) All() []*Task {
 }
 
 // Find a Task in Tasks
-func (m *Manager) Find(id float64) *Task {
-	f := new(Task)
-
+func (m *Manager) Find(ID float64) *Task {
 	for _, t := range m.All() {
-		if t.ID == id {
-			f = t
+		if t.ID == ID {
+			return t
 		}
 	}
 
-	return f
+	return nil
 }

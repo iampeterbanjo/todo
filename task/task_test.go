@@ -62,9 +62,17 @@ func TestManager(t *testing.T) {
 
 		m := NewManager()
 
-		Convey("A saved task", func() {
+		Convey("Given a saved task", func() {
 			m.Save(task)
 			all := m.All()
+
+			Convey("Finding a task", func() {
+				f := m.Find(task.ID)
+
+				Convey("Should return the task", func() {
+					So(f, ShouldResemble, task)
+				})
+			})
 
 			Convey("Should match created task", func() {
 				So(len(all), ShouldEqual, 1)
@@ -89,14 +97,6 @@ func TestManager(t *testing.T) {
 				all := m.All()
 				So(len(all), ShouldEqual, 1)
 				So(all[0], ShouldResemble, task)
-			})
-		})
-
-		Convey("Finding a task", func() {
-			f := m.Find(task.ID)
-
-			Convey("Should return the task", func() {
-				So(f, ShouldResemble, task)
 			})
 		})
 	})
