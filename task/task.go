@@ -47,7 +47,7 @@ func NewManager() *Manager {
 }
 
 // Save task to Manager.Tasks
-func (m Manager) Save(task *Task) {
+func (m *Manager) Save(task *Task) {
 	all := m.All()
 	found := false
 

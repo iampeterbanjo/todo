@@ -56,18 +56,18 @@ func TestTask(t *testing.T) {
 }
 
 func TestManager(t *testing.T) {
-	SkipConvey("Given a new task", t, func() {
+	Convey("Given a new task", t, func() {
 		task, _ := newTaskOrFatal("learn Go")
 
 		m := NewManager()
 
-		SkipConvey("A saved task", func() {
+		Convey("A saved task", func() {
 			m.Save(task)
 			all := m.All()
 
-			SkipConvey("Should match created task", func() {
+			Convey("Should match created task", func() {
 				So(len(all), ShouldEqual, 1)
-				So(all[0], ShouldEqual, *task)
+				So(all[0], ShouldResemble, task)
 			})
 
 			SkipConvey("Completing the task", func() {
