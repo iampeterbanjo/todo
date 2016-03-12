@@ -72,12 +72,12 @@ func CloneTask(t *Task) *Task {
 }
 
 // All tasks
-func (m Manager) All() []*Task {
+func (m *Manager) All() []*Task {
 	return m.Tasks
 }
 
 // Find a Task in Tasks
-func (m Manager) Find(id float64) *Task {
+func (m *Manager) Find(id float64) *Task {
 	f := new(Task)
 
 	for _, t := range m.All() {

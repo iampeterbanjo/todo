@@ -27,6 +27,7 @@ func TestTask(t *testing.T) {
 		Convey("It should return a task", func() {
 			So(err, ShouldBeNil)
 			So(task, ShouldHaveSameTypeAs, &Task{})
+			So(task.ID, ShouldNotEqual, 0)
 		})
 
 		Convey("It should have that title", func() {
@@ -91,11 +92,11 @@ func TestManager(t *testing.T) {
 			})
 		})
 
-		SkipConvey("Finding a task", func() {
+		Convey("Finding a task", func() {
 			f := m.Find(task.ID)
 
-			SkipConvey("Should return the task", func() {
-				So(f, ShouldEqual, *task)
+			Convey("Should return the task", func() {
+				So(f, ShouldResemble, task)
 			})
 		})
 	})
