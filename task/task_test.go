@@ -70,11 +70,11 @@ func TestManager(t *testing.T) {
 				So(all[0], ShouldResemble, task)
 			})
 
-			SkipConvey("Completing the task", func() {
+			Convey("Completing the task", func() {
 				task.Done = true
 				m.Save(task)
 
-				SkipConvey("Should mark the saved task as complete", func() {
+				Convey("Should mark the saved task as complete", func() {
 					So(m.All()[0].Done, ShouldBeTrue)
 				})
 			})
