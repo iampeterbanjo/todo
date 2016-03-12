@@ -20,18 +20,14 @@ import (
 )
 
 func TestTask(t *testing.T) {
-	Convey("Creating a new task", t, func() {
-		task, err := NewTask("Write tests")
+	Convey("Given a new task", t, func() {
+		title := "Write tests"
+		task, err := NewTask(title)
 
-		Convey("Should return a task", func() {
+		Convey("It should return a task", func() {
 			So(err, ShouldBeNil)
 			So(*task, ShouldHaveSameTypeAs, &Task{})
 		})
-	})
-
-	Convey("Given a title", t, func() {
-		title := "learn Go"
-		task, _ := newTaskOrFatal(title)
 
 		Convey("It should have that title", func() {
 			So(task.Title, ShouldEqual, title)
@@ -42,7 +38,7 @@ func TestTask(t *testing.T) {
 		})
 	})
 
-	Convey("For empty titles", t, func() {
+	Convey("Given a task with an empty title", t, func() {
 		_, err := NewTask("")
 
 		Convey("It should error", func() {
