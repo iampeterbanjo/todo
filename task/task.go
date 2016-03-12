@@ -15,10 +15,13 @@
 // The tests were developed before the code was written.
 package task
 
+import "math/rand"
+
 // Task has a title
 type Task struct {
 	Title string
 	Done  bool
+	ID    float64
 }
 
 // Manager has methods to work with tasks
@@ -28,7 +31,7 @@ type Manager struct {
 
 // NewTask creates Tasks given a title
 func NewTask(title string) (*Task, error) {
-	return &Task{title, false}, nil
+	return &Task{title, false, rand.Float64()}, nil
 }
 
 // NewManager creates a Manager
@@ -37,11 +40,22 @@ func NewManager() *Manager {
 }
 
 // Save task to Manager.Tasks
-func (t Manager) Save(task *Task) {
-	t.Tasks = append(t.Tasks, task)
+func (m Manager) Save(task *Task) {
+	m.Tasks = append(m.Tasks, task)
 }
 
 // All tasks
-func (t Manager) All() []*Task {
-	return t.Tasks
+func (m Manager) All() []*Task {
+	return m.Tasks
+}
+
+// Find a Task in Tasks
+func (m Manager) Find(id float64) *Task {
+	f := new(Task)
+	for _, t := range m.All() {
+		if t.ID == id {
+			f = t
+		}
+	}
+	return f
 }
